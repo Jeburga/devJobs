@@ -3,9 +3,6 @@ const router = express.Router();
 const homeController = require('../controllers/homeController')
 
 module.exports = () => {
-    router.get('/', (req, res) => {
-        res.send('Funciona')
-    })
-
+    router.get('/', homeController.mostrarTrabajos);
     return router;
 }

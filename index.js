@@ -1,5 +1,5 @@
 const express = require('express');
-const { engine } = require('express-handlebars'); // Importar la función `engine` desde express-handlebars
+const { engine } = require('express-handlebars'); 
 const path = require('path');
 const router = require('./routes');
  
