@@ -16,7 +16,8 @@ const app = express();
 // Configurar el motor de plantillas
 app.engine('handlebars', 
     engine({ 
-        defaultLayout: 'layout' 
+        defaultLayout: 'layout' , 
+        helpers: require('./helpers/handlebars')
     })
 );
 

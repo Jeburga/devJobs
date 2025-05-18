@@ -4,11 +4,14 @@
   "description": "Portal DevJobs con NodeJS, Handlebars, Mongoose",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./index"
+    "dev": "nodemon ./index",
+    "watch": "webpack --watch --mode development",
+    "start": "concurrently \"npm run dev\" \"npm run watch\" "
   },
   "author": "Jesus Burga",
   "license": "ISC",
   "dependencies": {
+    "concurrently": "^9.1.2",
     "connect-mongo": "^5.1.0",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.5.0",
@@ -21,6 +24,11 @@
     "slug": "^10.0.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "@babel/core": "^7.27.1",
+    "@babel/preset-env": "^7.27.2",
+    "babel-loader": "^8.2.2",
+    "nodemon": "^3.1.10",
+    "webpack": "^4.47.0",
+    "webpack-cli": "^3.3.12"
   }
 }
