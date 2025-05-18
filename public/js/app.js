@@ -1,17 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const skills = document.querySelector('lista-conocimientos');
+    const skills = document.querySelector('.lista-conocimientos');
 
-    if(skilss){
+    if(skills){
         skills.addEventListener('click', agregarSkills);
     }
 })
 
-const agregarSkills = (e) => {
+const skills = new Set();
+const agregarSkills = e => {
     if(e.target.tagName === 'LI'){
-        console.log("Si");
-    } else {
-        console.log('No');
-        
-    }
+        skills.add(e.target.textContent);
+        if (e.target.classList.contains('activo')){
+            skills.delete(e.target);
+            e.target.classList.remove('activo');
+        } else {
+            e.target.classList.add('activo')
+        }
+    } 
+
+    const skilssArray = [...skills];
+    document.querySelector('#skills').value = skilssArray;
     
 }
