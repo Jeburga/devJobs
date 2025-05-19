@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-const slug = require('slug');
+const slug = require('slug').default; 
 const shortid = require('shortid');
 
 const vacantesSchema = new mongoose.Schema({
