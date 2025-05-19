@@ -1,22 +1,30 @@
-const Vacante = require('../models/Vacantes');
+const Vacante = require("../models/Vacantes");
 
 exports.formularioNuevaVacante = (req, res) => {
-    res.render('nueva-vacante', {
-        nombrePagina: 'Nueva Vacante',
-        tagline: 'Llena el formulario y publica tu vacante'
-    });
-}
+  res.render("nueva-vacante", {
+    nombrePagina: "Nueva Vacante",
+    tagline: "Llena el formulario y publica tu vacante",
+  });
+};
 
 // agrega las vacantes a la base de datos
 exports.agregarVacantes = async (req, res) => {
+  console.log(req.body);
+
+  try {
+    console.log(req.body);
+
+    // Convertir skill a array si es un string
+    if (typeof req.body.skill === 'string') {
+      req.body.skill = req.body.skill.split(',').map(skill => skill.trim());
+    }
+
     const vacante = new Vacante(req.body);
+    await vacante.save();
 
-    // Crear arreglo de habiilidades (skills)
-    vacante.skills = req.body.skills.split();
-    
-    // almacenar en base de datos
-    const nuevaVacante = await vacante.save();
-
-    // redireccionar
-    res.redirect(`/vacantes/${nuevaVacante.url}`);
-}
+    res.redirect(`/vacantes/${vacante.url}`);
+  } catch (error) {
+    console.log('Error al guardar la vacante:', error);
+    res.send('Error al guardar');
+  }
+};

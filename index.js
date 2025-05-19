@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-// require('./config/db');
 const conectarDB = require('./config/db');
 const express = require('express');
 const { engine } = require('express-handlebars'); 
@@ -9,15 +8,14 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const bodyParser = require('body-parser');
+const app = express();
 
 require('dotenv').config({ path: 'variables.env'});
  
-const app = express();
-
 // habilitar BodyParser
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: true}))
- 
+app.use(express.urlencoded({ extended: true }));
+
 // Configurar el motor de plantillas
 app.engine('handlebars', 
     engine({ 
@@ -50,7 +48,6 @@ app.use('/', router());
  
 // Iniciar el servidor
 app.listen(process.env.PUERTO)
-// app.listen(process.env.MONGO_URI)
 
 // Conectar a la base de datos
 conectarDB()

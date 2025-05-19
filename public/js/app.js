@@ -11,14 +11,12 @@ const agregarSkills = e => {
     if(e.target.tagName === 'LI'){
         skills.add(e.target.textContent);
         if (e.target.classList.contains('activo')){
-            skills.delete(e.target);
+            skills.delete(e.target.textContent);
             e.target.classList.remove('activo');
         } else {
             e.target.classList.add('activo')
         }
     } 
 
-    const skilssArray = [...skills];
-    document.querySelector('#skills').value = skilssArray;
-    
+    document.querySelector('#skills').value = [...skills].join(',');
 }
