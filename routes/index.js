@@ -9,5 +9,6 @@ module.exports = () => {
     // crear vacantes
     router.get('/vacantes/nueva', vacantesController.formularioNuevaVacante)
     router.post('/vacantes/nueva', vacantesController.agregarVacantes);
+    router.get('/vacantes/:url', vacantesController.mostrarVacante);
     return router;
 }
