@@ -41,3 +41,19 @@ exports.mostrarVacante = async ( req, res, next ) => {
     
   }
 }
+
+exports.formEditarVacante = async ( req, res, next ) => {
+  try {
+    const vacante = await Vacante.findOne({ url: req.params.url }).lean();
+
+    if(!vacante) return next();
+
+    res.render('editar-vacante', {
+      vacante,
+      nombrePagina: `Editar - ${vacante.titulo}`
+    })
+  } catch (error) {
+    console.log('No se pudo editar vacante:  ' +  error);
+    
+  }
+}
