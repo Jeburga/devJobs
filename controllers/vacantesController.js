@@ -1,3 +1,4 @@
+const Vacantes = require("../models/Vacantes");
 const Vacante = require("../models/Vacantes");
 
 exports.formularioNuevaVacante = ( req, res ) => {
@@ -55,5 +56,22 @@ exports.formEditarVacante = async ( req, res, next ) => {
   } catch (error) {
     console.log('No se pudo editar vacante:  ' +  error);
     
+  }
+}
+
+exports.editarVacante = async ( req, res, next ) => {
+  try {
+
+    const vacanteActualizada = req.body;
+    vacanteActualizada.sklls = req.body.skills.split(',');
+    const vacante = await vacante.findOneAndUpdate( {url: req.params.url}, vacanteActualizada, {
+      new: true,
+      runValidators: true,
+    } );
+
+    res.redirect(`/vacantes/${vacante.url}`);
+
+  } catch(error) {
+    console.log(error);
   }
 }
