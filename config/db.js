@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 require('dotenv').config({ path: 'variables.env' });
 
-console.log('DATA_BASE:', process.env.DATA_BASE);
+require('../models/Usuarios');
+require('../models/Vacantes');
 
 const conectarDB = async () => {
     try {
@@ -9,7 +10,7 @@ const conectarDB = async () => {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             serverSelectionTimeoutMS: 5000,
-        });
+        });        
         console.log('MongoDB conectado');
     } catch (error) {
         console.error('Error de conexión:', error.message);

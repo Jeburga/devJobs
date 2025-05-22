@@ -63,8 +63,8 @@ exports.editarVacante = async ( req, res, next ) => {
   try {
 
     const vacanteActualizada = req.body;
-    vacanteActualizada.sklls = req.body.skills.split(',');
-    const vacante = await vacante.findOneAndUpdate( {url: req.params.url}, vacanteActualizada, {
+    vacanteActualizada.skills = req.body.skill.split(',');
+    const vacante = await Vacante.findOneAndUpdate( {url: req.params.url}, vacanteActualizada, {
       new: true,
       runValidators: true,
     } );
