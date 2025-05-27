@@ -41,10 +41,17 @@ exports.validarRegistro = (req, res, next) => {
 exports.crearUsuario = async (req, res, next) => {
   const usuario = new Usuarios(req.body);
 
-  const nuevoUsuario = await usuario.save();
-  if (!nuevoUsuario) {
-    return next();
-  }
+  try {
+    await usuario.save();
+    res.redirect('/iniciar-sesion');
+  } catch (error) {
+    if (error.code === 11000) {
+      req.flash('error', 'Ese correo ya está registrado');
+      res.redirect('/crear-cuenta');
+      return;
+    }
 
-  res.redirect("/iniciar-sesion");
+    req.flash('error', error.message);
+    res.redirect('/crear-cuenta');
+  }
 };
