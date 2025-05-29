@@ -1,4 +1,3 @@
-// const Vacantes = require("../models/Vacantes");
 const Vacante = require("../models/Vacantes");
 
 exports.formularioNuevaVacante = ( req, res ) => {
@@ -9,6 +8,34 @@ exports.formularioNuevaVacante = ( req, res ) => {
     nombre: req.user.nombre,
   });
 };
+
+// Validar y sanitizar los campos de las nuevas vacantes
+const { body, validationResult } = require('express-validator');
+
+exports.validarVacante = [
+  body('titulo').notEmpty().withMessage('Agregar un Titulo a la Vacante').escape(),
+  body('empresa').notEmpty().withMessage('Agregar una Empresa').escape(),
+  body('ubicacion').notEmpty().withMessage('Agregar una Ubicacion').escape(),
+  body('salario').optional().escape(),
+  body('contrato').notEmpty().withMessage('Selecciona el tipo de contrato').escape(),
+  body('skills').notEmpty().withMessage('Agregar al menos una habilidad').escape(),
+
+  (req, res, next) => {
+    const errores = validationResult(req);
+    if (!errores.isEmpty()) {
+      const mensajes = errores.array().map(error => error.msg);
+      req.flash('error', mensajes);
+      return res.render('nueva-vacante', {
+        nombrePagina: 'Nueva Vacante',
+        tagline: 'Llena el formulario y publica tu vacante',
+        cerrarSesion: true,
+        nombre: req.user ? req.user.nombre : '',
+        mensajes: req.flash()
+      });
+    }
+    next();
+  }
+];
 
 // agrega las vacantes a la base de datos
 exports.agregarVacantes = async ( req, res ) => {
@@ -83,3 +110,4 @@ exports.editarVacante = async ( req, res, next ) => {
     console.log(error);
   }
 }
+

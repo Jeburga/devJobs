@@ -9,7 +9,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const bodyParser = require('body-parser');
-const expressValidator = require('express-validator');
+// const expressValidator = require('express-validator');
 const flash = require('connect-flash');
 const passport = require('./config/passport')
 
@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 
 // Validacion de campos
-app.use(expressValidator());
+// app.use(expressValidator());
 
 // Configurar el motor de plantillas
 app.engine('handlebars', 

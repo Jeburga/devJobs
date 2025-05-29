@@ -9,34 +9,65 @@ exports.formCrearCuenta = (req, res) => {
   });
 };
 
-exports.validarRegistro = (req, res, next) => {
+const { body, validationResult } = require('express-validator');
+
+exports.validarRegistro = [
   // Sanitizar datos del registro
-  req.sanitizeBody("nombre").escape();
-  req.sanitizeBody("email").escape();
-  req.sanitizeBody("password").escape();
-  req.sanitizeBody("repetir").escape();
+  body("nombre").notEmpty().withMessage("El nombre es obligatorio").escape(),
+  body("email").isEmail().withMessage("El email debe ser valido").escape(),
+  body("password").notEmpty().withMessage("El password no debe ir vacío").escape(),
+  body("repetir")
+    .notEmpty()
+    .withMessage("Confirmar password no debe ir vacío")
+    .custom((value, {req}) => {
+      if (value !== req.body.password) {
+        throw new Error("El password es diferente");
+      }
+    })
+    .escape(),
 
-  // Validando datos del registro
-  req.checkBody("nombre", "El nombre es obligatorio").notEmpty();
-  req.checkBody("email", "El email debe ser valido").isEmail();
-  req.checkBody("password", "El password no debe ir vacío").notEmpty();
-  req.checkBody("confirmar", "Confirmar password no debe ir vacío").notEmpty();
-  req.checkBody("confirmar", "El password es diferente").equals(req.body.password);
-
-  const errores = req.validationErrors();
-
-  if (errores) {
-    // si hay errores
-    req.flash("error", errores.map((error) => error.msg));
-    res.render("crear-cuenta", {
-      nombrePagina: "Crea tu cuenta en DevJobs",
-      tagLine: "Comienza a publicar tus vacantes gratis, solo debes crear una cuenta",
-      mensajes: req.flash(),
-    });
-    return;
+   (req, res, next) => {
+    const errores = validationResult(req);
+    if (!errores.isEmpty()) {
+      req.flash("error", errores.array().map((error) => error.msg));
+      return res.render("crear-cuenta", {
+        nombrePagina: "Crea tu cuenta en DevJobs",
+        tagLine: "Comienza a publicar tus vacantes gratis, solo debes crear una cuenta",
+        mensajes: req.flash(),
+      });
+    }
+    next();
   }
-  next(); // si no hay errores
-};
+];
+
+// exports.validarRegistro = (req, res, next) => {
+//   // Sanitizar datos del registro
+//   req.sanitizeBody("nombre").escape();
+//   req.sanitizeBody("email").escape();
+//   req.sanitizeBody("password").escape();
+//   req.sanitizeBody("repetir").escape();
+
+//   // Validando datos del registro
+//   req.checkBody("nombre", "El nombre es obligatorio").notEmpty();
+//   req.checkBody("email", "El email debe ser valido").isEmail();
+//   req.checkBody("password", "El password no debe ir vacío").notEmpty();
+//   req.checkBody("confirmar", "Confirmar password no debe ir vacío").notEmpty();
+//   req.checkBody("confirmar", "El password es diferente").equals(req.body.password);
+
+//   const errores = req.validationErrors();
+
+//   if (errores) {
+//     // si hay errores
+//     req.flash("error", errores.map((error) => error.msg));
+//     res.render("crear-cuenta", {
+//       nombrePagina: "Crea tu cuenta en DevJobs",
+//       tagLine: "Comienza a publicar tus vacantes gratis, solo debes crear una cuenta",
+//       mensajes: req.flash(),
+//     });
+//     return;
+//   }
+//   next(); // si no hay errores
+// };
 
 exports.crearUsuario = async (req, res, next) => {
   const usuario = new Usuarios(req.body);
