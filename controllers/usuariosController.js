@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Usuarios = mongoose.model("Usuarios");
+const { body, validationResult } = require('express-validator');
 
 exports.formCrearCuenta = (req, res) => {
   res.render("crear-cuenta", {
@@ -9,7 +10,6 @@ exports.formCrearCuenta = (req, res) => {
   });
 };
 
-const { body, validationResult } = require('express-validator');
 
 exports.validarRegistro = [
   // Sanitizar datos del registro
@@ -124,3 +124,36 @@ exports.editarPerfil = async (req, res) => {
 
   res.redirect('/administracion');
 };
+
+// Sanitizar y validar formulario de editar clientes
+exports.validarPerfil = [
+  body('nombre')
+    .notEmpty()
+    .withMessage('El nombre no puede ir vacío')
+    .escape(),
+  
+  body('email')
+    .notEmpty().withMessage('El correo no puede ir vacío')
+    .isEmail().withMessage('Agregar un correo válido')
+    .normalizeEmail()
+    .escape(),
+
+  body('password')
+    .optional({ checkFalsy: true})
+    .isLength({ min: 6 }).withMessage('Tienes que colocar una password de al menos 6 carácteres')
+    .escape(),
+
+  (req, res, next) => {
+    const errores = validationResult(req);
+
+   if (!errores.isEmpty()) {
+      req.flash("error", errores.array().map((error) => error.msg));
+      return res.render("editar-perfil", {
+        nombrePagina: "Editar Perfil",
+        tagLine: "Modifica la información de tu cuenta",
+        mensajes: req.flash(),
+      });
+    }
+    next();
+  }
+];
