@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
-const conectarDB = require('./config/db');
 const express = require('express');
+
+const conectarDB = require('./config/db');
 const { engine } = require('express-handlebars'); 
 const path = require('path');
 const router = require('./routes');
@@ -17,12 +18,11 @@ require('dotenv').config({ path: 'variables.env'});
 const app = express();
 
 // habilitar BodyParser
-app.use(bodyParser.json())
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json())
 
 // Validacion de campos
 app.use(expressValidator());
-
 
 // Configurar el motor de plantillas
 app.engine('handlebars', 

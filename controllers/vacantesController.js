@@ -1,10 +1,12 @@
-const Vacantes = require("../models/Vacantes");
+// const Vacantes = require("../models/Vacantes");
 const Vacante = require("../models/Vacantes");
 
 exports.formularioNuevaVacante = ( req, res ) => {
   res.render("nueva-vacante", {
     nombrePagina: "Nueva Vacante",
     tagline: "Llena el formulario y publica tu vacante",
+    cerrarSesion: true, 
+    nombre: req.user.nombre,
   });
 };
 
@@ -17,6 +19,10 @@ exports.agregarVacantes = async ( req, res ) => {
     }
 
     const vacante = new Vacante(req.body);
+
+    // usuario autor de la vacante
+    vacante.autor = req.user._id;
+
     await vacante.save();
 
     res.redirect(`/vacantes/${vacante.url}`);
@@ -51,7 +57,9 @@ exports.formEditarVacante = async ( req, res, next ) => {
 
     res.render('editar-vacante', {
       vacante,
-      nombrePagina: `Editar - ${vacante.titulo}`
+      nombrePagina: `Editar - ${vacante.titulo}`,
+      cerrarSesion: true, 
+      nombre: req.user.nombre,
     })
   } catch (error) {
     console.log('No se pudo editar vacante:  ' +  error);
