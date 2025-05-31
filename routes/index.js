@@ -35,7 +35,7 @@ module.exports = () => {
     );
 
     // Eliminar vacantes
-    router.delete('/vacantes/eliminar/:id', 
+    router.delete('/vacantes/eliminar/:_id', 
         vacantesController.eliminarVacante
     )
 
