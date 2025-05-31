@@ -111,3 +111,10 @@ exports.editarVacante = async ( req, res, next ) => {
   }
 }
 
+// Eliminar vacantes
+exports.eliminarVacante = async ( req, res ) => {
+  const { id } = req.params;
+
+  res.status(200).send('Vacante Eliminada Correctamente');
+  
+}

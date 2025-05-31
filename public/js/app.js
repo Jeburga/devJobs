@@ -1,3 +1,6 @@
+import axios from "axios";
+import Swal from "sweetalert2";
+
 document.addEventListener("DOMContentLoaded", () => {
   const skills = document.querySelector(".lista-conocimientos");
 
@@ -13,6 +16,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // una vez que estamos en editar, llamar a la funcion
     skillSeleccionados();
+  }
+
+  const vacantesListado = document.querySelector(".panel-administracion");
+
+  if (vacantesListado) {
+    vacantesListado.addEventListener("click", accionesListado);
   }
 });
 
@@ -54,8 +63,47 @@ const limpiarAlertas = () => {
       // Eliminar la primera alerta
       alertas.removeChild(alertas.children[0]);
     } else if (alertas.children.length === 0) {
-        alertas.parentElement.removeChild(alertas);
-        clearInterval(interval);
+      alertas.parentElement.removeChild(alertas);
+      clearInterval(interval);
     }
   }, 2000);
+};
+
+// Eliminar vacantes
+const accionesListado = (e) => {
+  e.preventDefault();
+
+  if (e.target.dataset.eliminar) {
+    // eliminar por medio de axios
+    Swal.fire({
+      title: "¿Confirmar Eliminación?",
+      text: "Una vez eliminada, no se puede recuperar",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, Eliminar",
+      cancelButtonText: "No, Cancelar",
+    }).then((result) => {
+      // Enviar petición con Axios
+      const url = `${location.origin}/vacantes/eliminar/${e.target.dataset.eliminar}`;
+
+      // Axios para eliminar
+      axios.delete(url, { params: { url } }).then(function (respuesta) {
+        if (respuesta.status === 200) {
+          Swal.fire(
+            "Eliminado!",
+            respuesta.data,
+            "success"
+          );
+
+          // TODO: Eliminar del DOM
+          e.target.parentElement.parentElement.parentElement.removeChild(e.target.parentElement.parentElement);
+          
+        }
+      });
+    });
+  } else {
+    window.location.href = e.target.href;
+  }
 };
