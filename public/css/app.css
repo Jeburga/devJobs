@@ -390,7 +390,6 @@ trix-toolbar .trix-button--icon-strike {
 }
 
 /** Admin **/
-
 p.candidatos {
     font-weight: 400;
     color: white;
@@ -405,6 +404,7 @@ p.candidatos {
     width: 120px;
     align-self: flex-start;
     margin-right: 1rem;
+    border-radius: 20%;
 }
 .cerrar-sesion p, 
 .cerrar-sesion a {

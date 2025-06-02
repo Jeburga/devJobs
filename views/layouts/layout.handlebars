@@ -15,7 +15,7 @@
     
     <div class="nombre-sitio contenedor">
       <h1>
-        <a href="/">devJobs</a>
+        <a href="/">DevJobs</a>
       </h1>
 
       {{#if barra}}
@@ -29,6 +29,9 @@
 
       {{#if cerrarSesion}}
         <div class="cerrar-sesion">
+          {{#if imagen}}
+            <img src="/uploads/perfiles/{{imagen}}" class="admin-perfil" />
+          {{/if}}
           <p>Hola! {{nombre}}</p>
           <a href="/administracion">Administración</a>
           <a href="/cerrar-sesion">Cerrar Sesión</a>
