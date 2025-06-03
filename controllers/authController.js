@@ -25,6 +25,9 @@ exports.mostrarPanel = async ( req, res ) => {
     // Consultar el usuario autenticado
     const vacantes = await Vacante.find({ autor: req.user._id }).lean();
 
+    console.log(vacantes);
+    
+
     res.render('administracion', {
         nombrePagina: 'Panel de Administración',
         tagLine: 'Crea y administra tus vacantes desde aquí',
