@@ -5,7 +5,7 @@ const shortid = require('shortid');
 exports.formularioNuevaVacante = (req, res) => {
   res.render("nueva-vacante", {
     nombrePagina: "Nueva Vacante",
-    tagline: "Llena el formulario y publica tu vacante",
+    tagLine: "Llena el formulario y publica tu vacante",
     cerrarSesion: true,
     nombre: req.user.nombre,
     imagen: req.user.imagen

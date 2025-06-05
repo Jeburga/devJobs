@@ -4,6 +4,7 @@ const shortid = require('shortid');
 const { body, validationResult } = require('express-validator');
 
 const Usuarios = mongoose.model("Usuarios");
+// const Vacante = mongoose.model("Vacantes");
 
 // Opciones de multer
 const configuracionMulter = {
@@ -183,3 +184,11 @@ exports.validarPerfil = [
     next();
   }
 ];
+
+// Formulario para reestablecer password
+exports.formReestablecerPassword = (req, res, ext) => {
+  res.render('reestablecer-password', {
+    nombrePagina: 'Reestablecer tu Password',
+    tagLine: 'Si ya tienes una cuenta, pero olvidarte tu password, coloca tu email',
+  })
+}

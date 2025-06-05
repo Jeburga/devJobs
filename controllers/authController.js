@@ -1,5 +1,7 @@
 const passport = require('passport');
 const Vacante = require("../models/Vacantes");
+const enviarEmail = require('../handlers/email');
+const crypto = require('crypto');
 
 exports.autenticarUsuario = passport.authenticate('local', {
     successRedirect : '/administracion',
@@ -46,4 +48,38 @@ exports.cerrarSesion = (req, res, next) => {
         req.flash('correcto', 'cerraste sesión correctamente')
         return res.redirect('/iniciar-sesion');
     });
+}
+
+
+// Genera el token en la tabla del usuario
+exports.enviarToken = async (req, res) => {
+  const usuario = await Usuarios.findOne({ email: req.body.email });
+
+  if (!usuario) {
+    req.flash('error', 'No existe un usuario registrado con ese correo');
+    return res.redirect('/iniciar-sesion')
+  }
+
+  // Si usuario existe
+  usuario.token = crypto.randomBytes(20).toString('hex'); // permite generar un código token en una línea
+  usuario.expira = Date.now() + 3600000;
+
+  // Guardar usuario
+  await usuario.save();
+  const resetUrl = `http://${req.headers.host}/reestablecer-password/${usuario.token}`;
+
+  console.log(resetUrl);
+
+  // Enviar notificación por email
+  await enviarEmail.envier({
+    usuario,
+    subject: 'Password Reset',
+    resetUrl,
+    archivo: 'reset'
+  })
+
+  // Todo correcto
+  req.flash('correcto', 'Revisa tu E-mail para seguir las indicaciones');
+  res.redirect('/iniciar-sesion')
+  
 }
