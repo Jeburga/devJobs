@@ -98,7 +98,6 @@ const accionesListado = (e) => {
               "success"
             );
 
-          // TODO: Eliminar del DOM
           e.target.parentElement.parentElement.parentElement.removeChild(e.target.parentElement.parentElement);
         }
       }).catch(() => {

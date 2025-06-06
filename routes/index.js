@@ -56,12 +56,17 @@ module.exports = () => {
     )
 
     // Reestablecer password
+<<<<<<< HEAD
     router.get('/reestablecer-password', authController.formReestablecerPassword);
     router.post('/reestablecer-password', authController.enviarToken);
 
     // Resetear password (Almacenar en BD)
     router.get('/reestablecer-password/:token', authController.reestablecerPassword);
     router.post('/reestablecer-password/:token', authController.guardarPassword);
+=======
+    router.get('/reestablecer-password', usuariosController.formReestablecerPassword);
+    router.post('/reestablecer-password', usuariosController.enviarToken);
+>>>>>>> a581fc8ff69acf19b82269d4c54343a01cf9e867
 
     // Panel de administracion
     router.get('/administracion', 
